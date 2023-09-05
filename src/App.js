@@ -5,6 +5,8 @@ import HomePage from './pages/HomePage/HomePage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ListCourses from './pages/HomePage/ListCourses/ListCourses';
 import AddCourses from './pages/HomePage/AddCourses/AddCourses';
+import ListUser from './pages/HomePage/ListUser/ListUser';
+import AddUser from './pages/HomePage/AddCourses/AddUser';
 
 function App() {
   return (
@@ -15,6 +17,9 @@ function App() {
         <Route path='/login' element={<Login/>} ></Route>
         <Route path='/courses' element={<ListCourses/>} ></Route>
         <Route path='/courses/add-courses' element={<AddCourses/>} ></Route>
+        <Route path='/user' element={<ListUser/>} ></Route>
+        <Route path='/user/add-user' element={<AddUser/>} ></Route>
+
 
       </Routes>
     </BrowserRouter>

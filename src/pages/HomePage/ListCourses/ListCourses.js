@@ -1,14 +1,30 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Header from "../../Header/Header";
-import { Button, Card } from "antd";
+import { Button, Card, message } from "antd";
 import "./ListCourses.css";
 import { https } from "../../../services/config";
 import { Table } from "antd";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { CoursesService } from "../../../services/CoursesService";
 
 const { Meta } = Card;
 export default function ListCourses() {
+  const handleDeteleCourses=(maKhoaHoc) => { 
+    CoursesService.deteleCoursesList(maKhoaHoc).then((res) => {
+      console.log(res);
+      message.success('Xóa thành công !!!')
+      setTimeout(() => {
+        window.location.reload()
+
+      }, 900);
+    })
+    .catch((err) => {
+      console.log(err);
+      message.error(err.response.data)
+    });
+;
+   }
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const onSelectChange = (newSelectedRowKeys) => {
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
@@ -53,8 +69,7 @@ export default function ListCourses() {
   };
   const [coursesArr, setcoursesArr] = useState([]);
   useEffect(() => {
-    https
-      .get("/api/QuanLyKhoaHoc/LayDanhSachKhoaHoc?MaNhom=GP01")
+   CoursesService.getCoursesList()
       .then((res) => {
         console.log(res);
         setcoursesArr(res.data);
@@ -118,9 +133,11 @@ export default function ListCourses() {
             <NavLink className="bg-dark text-green-600 mr-2 p-2 text-xl" to="/">
               <EditOutlined />
             </NavLink>
-            <NavLink className="bg-dark text-red-600 mr-2 p-2 text-xl" to="/">
+            <button onClick={() => { 
+              handleDeteleCourses(courses.maKhoaHoc)
+             }} className="bg-dark text-red-600 mr-2 p-2 text-xl" >
               <DeleteOutlined />
-            </NavLink>
+            </button>
           </Fragment>
         );
       },

@@ -1,0 +1,14 @@
+
+.ant-form-item-label{
+    padding-bottom: 0 !important;
+}
+.ant-form-item-label label {
+    font-size: 13px !important;
+    font-weight: 500;
+    color: rgb(55, 65, 81);
+    text-transform: uppercase;
+}
+
+.ant-select{
+    width: 100% !important;
+}

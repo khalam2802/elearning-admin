@@ -50,7 +50,6 @@ export default function UserNav() {
     }
   };
   let user = useSelector((state) => state.userSlice.userInfo);
-  console.log("user: ", user);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const onSearch = (value) => console.log(value);
@@ -63,6 +62,7 @@ export default function UserNav() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  
   return (
     <div>
       <div className="header_right flex items-center">

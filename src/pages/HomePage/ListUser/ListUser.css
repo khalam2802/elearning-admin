@@ -15,7 +15,7 @@
 .mt-4, .my-4 {
     margin-top: 1.5rem!important;
 }
-.ant-table-wrapper table tr td.ant-table-selection-column,
+ant-table-wrapper table tr td.ant-table-selection-column,
 .ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:first-child {
     display: none !important;
 }
