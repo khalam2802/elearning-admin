@@ -189,24 +189,7 @@ export default function ListUser() {
   const navigate = useNavigate();
   const data = coursesArr;
 
-  // let renderCoursesList = () => {
-  //   return coursesArr.map(({hinhAnh,tenKhoaHoc,moTa}) => {
-  //     return (
-  //       <Card
-  //         hoverable
-  //         style={{ width:240 }}
-  //         cover={
-  //           <img className="h-60 object-cover"
-  //             alt="example"
-  //             src={hinhAnh}
-  //           />
-  //         }
-  //       >
-  //         <Meta title={tenKhoaHoc}description={moTa} />
-  //       </Card>
-  //     );
-  //   });
-  // };
+
   return (
     <div className="">
       <Header />

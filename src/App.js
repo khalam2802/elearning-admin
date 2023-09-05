@@ -7,6 +7,7 @@ import ListCourses from './pages/HomePage/ListCourses/ListCourses';
 import AddCourses from './pages/HomePage/AddCourses/AddCourses';
 import ListUser from './pages/HomePage/ListUser/ListUser';
 import AddUser from './pages/HomePage/AddCourses/AddUser';
+import PageSearch from './pages/Search/PageSearch';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path='/courses/add-courses' element={<AddCourses/>} ></Route>
         <Route path='/user' element={<ListUser/>} ></Route>
         <Route path='/user/add-user' element={<AddUser/>} ></Route>
+        <Route path='search' element={<PageSearch/>} ></Route>
 
 
       </Routes>

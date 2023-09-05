@@ -202,11 +202,11 @@ export default function AddUser() {
           </Form.Item>
           {/* BUTTON */}
           <Form.Item className="mt-6">
-            <button
-              type="submit"
-              className="font-[500] w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#f64a6e] rounded-md hover:bg-[#f77259] focus:outline-none focus:bg-[#f77259]"
-            >
-              Register
+          <button
+                    type="submit"
+                    className="font-[500] w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-[#388acc] rounded-md hover:bg-[#388acc] focus:outline-none focus:bg-[#388acc]"
+                  >
+              Thêm Người Dùng
             </button>
           </Form.Item>
         </Form>

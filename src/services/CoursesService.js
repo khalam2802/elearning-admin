@@ -19,6 +19,9 @@ export const CoursesService = {
   deteleCoursesList:(maKhoaHoc) => { 
     return https.delete(`/api/QuanLyKhoaHoc/XoaKhoaHoc?MaKhoaHoc=${maKhoaHoc}`)
    },
+   putUpdateCoursesList:((value) => { 
+    return https.put('/api/QuanLyKhoaHoc/CapNhatKhoaHoc',value)
+    })
   
   
 

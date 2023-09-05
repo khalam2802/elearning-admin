@@ -78,6 +78,7 @@ export default function UserNav() {
           open={isModalOpen}
           onOk={handleOk}
           onCancel={handleCancel}
+          
         >
           <Search
             placeholder=""
