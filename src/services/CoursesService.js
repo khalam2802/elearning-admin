@@ -1,8 +1,11 @@
 import { https } from "./config";
 
 export const CoursesService = {
-  getCoursesList: () => {
-    return https.get("/api/QuanLyKhoaHoc/LayDanhSachKhoaHoc?MaNhom=GP08");
+  getCoursesList: (tenKhoaHoc="") => {
+    if(tenKhoaHoc.trim()!=""){
+      return https.get(`/api/QuanLyKhoaHoc/LayDanhSachKhoaHoc?tenKhoaHoc=${tenKhoaHoc}&MaNhom=GP01`)
+    }
+    return https.get("/api/QuanLyKhoaHoc/LayDanhSachKhoaHoc?MaNhom=GP01");
   },
   postAddCoursesListL:(values)=>{
     return https.post('/api/QuanLyKhoaHoc/ThemKhoaHoc',values)
@@ -19,7 +22,8 @@ export const CoursesService = {
    },
    putUpdateCoursesList:((value) => { 
     return https.put('/api/QuanLyKhoaHoc/CapNhatKhoaHoc',value)
-    })
+    }),
+    
   
   
 

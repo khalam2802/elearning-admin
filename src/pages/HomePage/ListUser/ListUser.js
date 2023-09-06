@@ -13,6 +13,7 @@ import "./ListUser.css";
 import { UserService } from "../../../services/UserService";
 import { Option } from "antd/es/mentions";
 import Search from "antd/es/input/Search";
+import { useSelector } from "react-redux";
 const { Meta } = Card;
 export default function ListUser() {
   const onFinishFailed = (errorInfo) => {
@@ -37,7 +38,16 @@ export default function ListUser() {
     console.log("item: ", item);
     setNguoiDung(item);
   };
-
+  // admin
+  const admin =useSelector((state) => { 
+    return state.userSlice.userInfo
+  })
+useEffect(() => { 
+  if (!admin){
+    navigate('/login')
+  }
+  
+ },[])
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -53,7 +63,13 @@ export default function ListUser() {
       })
       .catch((err) => {
         console.log(err);
-        message.error(err.response.data);
+        if (err.response.data==''){
+          message.error('Có gì đó sai sai')
+        }
+        else{
+
+          message.error(err.response.data);
+        }
       });
   };
   // search
@@ -61,8 +77,9 @@ export default function ListUser() {
   const onSearch = (value) => {
     UserService.getUserList(value)
     .then((res) => {
-      setSearchValue(res.data);
-      // console.log('onSearch: ', onSearch);
+      // setSearchValue(res.data);
+      setUserArr(res.data)
+      console.log('onSearch: ', res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -166,12 +183,12 @@ export default function ListUser() {
       },
     ],
   };
-  const [coursesArr, setcoursesArr] = useState([]);
+  const [userArr, setUserArr] = useState([]);
   useEffect(() => {
     UserService.getUserList()
       .then((res) => {
         console.log(res);
-        setcoursesArr(res.data);
+        setUserArr(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -235,7 +252,7 @@ export default function ListUser() {
     },
   ];
   const navigate = useNavigate();
-  const data = coursesArr;
+  const data = userArr;
 
   return (
     
@@ -248,14 +265,17 @@ export default function ListUser() {
        >{handleSearch()}</Modal> */}
       <div className="px-5">
         <h3 className="text-4xl py-5">Quản lý người dùng </h3>
-        <Search
-          className="mg-5"
-          enterButton={<SearchOutlined />}
-          size="large"
-          onSearch={onSearch}
-        ></Search>
-        <Button
-          className="mb-5"
+        <Search className="bg-[#73AFCA] text-black boder rounded mr-3"
+      placeholder=""
+      onSearch={onSearch}
+      style={{
+        width: 200,
+        
+        
+      }}
+    />
+        <Button 
+          className="mb-5 " 
           onClick={() => {
             navigate("/user/add-user");
           }}
@@ -274,7 +294,7 @@ export default function ListUser() {
         {renderCoursesList()}
       </div> */}
       <Modal 
-        title="Basic Modal"
+        title="Cập nhật thông tin người dùng"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}

@@ -1,20 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {};
+const initialState = {
+    isLoading:false,
+
+}
 
 const spinnerSlice = createSlice({
-  name: "spinnerSlice",
+  name: 'spinnerSlice',
   initialState,
   reducers: {
-    batLoading: (state, action) => {
-      state.isLoading = true;
+    batLoading:(state,action)=>{
+        state.isLoading=true
     },
-    tatLoading: (state, action) => {
-      state.isLoading = false;
-    },
-  },
+    tatLoading:(state,action)=>{
+        state.isLoading=false
+    }
+  }
 });
 
-export const {batLoading,tatLoading} = spinnerSlice.actions;
+export const {batLoading,tatLoading} = spinnerSlice.actions
 
-export default spinnerSlice.reducer;
+export default spinnerSlice.reducer

@@ -21,8 +21,10 @@ export default function Login() {
         message.success("Đăng nhập thành công");
         dispatch(setLogIn(res.data));
       localServ.setUser(res.data)
+      navigate("/")
         setTimeout(() => {
-          navigate("/");
+          window.location.reload()
+          ;
         }, 2000);
       })
       .catch((err) => {
@@ -38,12 +40,10 @@ export default function Login() {
       <div className="relative flex flex-col justify-center overflow-hidden">
             <div className="w-full p-4 m-auto bg-white rounded-xl shadow-xl md:max-w-lg">
               <div className="flex items-center justify-center">
-                <div className="h-14 w-14">
                 
-                </div>
               </div>
               <h1 className="text-3xl mt-4 font-semibold text-center text-black">
-                Login to COURSEPLUS
+                Đăng nhập
               </h1>
               <Form className='mt-6'
                 name="basic"

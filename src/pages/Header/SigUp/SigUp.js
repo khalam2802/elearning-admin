@@ -178,7 +178,7 @@ export default function SigUp() {
                   ]}
                 >
                   <Select
-                    placeholder="Select a option and change input text above"
+                    placeholder=""
                     allowClear
                   >
                     <Option value="GP01">GP01</Option>

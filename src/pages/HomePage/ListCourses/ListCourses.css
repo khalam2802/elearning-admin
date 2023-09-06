@@ -19,3 +19,6 @@
 .ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:first-child {
     display: none !important;
 }
+.ant-btn css-dev-only-do-not-override-17a39f8 .ant-btn-default .ant-btn-icon-only .ant-input-search-button{
+    font-size: 100px !important;
+}

@@ -5,9 +5,11 @@ import "./ListCourses.css";
 import { https } from "../../../services/config";
 import { Table } from "antd";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons";
 import { CoursesService } from "../../../services/CoursesService";
 import moment from "moment";
+import { useSelector } from "react-redux";
+import Search from "antd/es/input/Search";
 const{Option} = Select
 
 const { Meta } = Card;
@@ -55,17 +57,19 @@ export default function ListCourses() {
            });
        }, []);
       const onFinish = (values) => {
-        let newValues = { ...values, hinhAnh: hinhAnh.name, ngayTao:ngayTao,maKhoaHoc:khoaHoc.maKhoaHoc };
+        let today = new Date();
+        let date=today.getDate() + "/"+ parseInt(today.getMonth()+1) +"/"+today.getFullYear()
+        let newValues = { ...values, hinhAnh: hinhAnh.name, ngayTao:date,maKhoaHoc:khoaHoc.maKhoaHoc };
         console.log("newValues: ", newValues);
         CoursesService.putUpdateCoursesList(newValues)
           .then((res) => {
             console.log("res: ", res);
             message.success("Cập Nhật Khóa Học thành công !!!")
             setTimeout(() => {
-            navigate("/courses")
+              setIsModalOpen(false)
     
               
-            }, 2000);
+            }, 1000);
           })
           .catch((err) => {
             console.log("err: ", err);
@@ -80,12 +84,22 @@ export default function ListCourses() {
 
 
    }
-   
+  //  admin
+  const admin =useSelector((state) => { 
+    return state.userSlice.userInfo
+  })
+useEffect(() => { 
+  if (!admin){
+    navigate('/login')
+  }
+  
+ },[])
   // modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
+
   const handleOk = () => {
     setIsModalOpen(false);
   };
@@ -149,12 +163,26 @@ export default function ListCourses() {
       },
     ],
   };
-  const [coursesArr, setcoursesArr] = useState([]);
-  useEffect(() => {
+  const [coursesArr, setCoursesArr] = useState()
+ const [userArr, setUserArr] = useState()
+ const [searchValue, setSearchValue] = useState();
+ const onSearch = (value) => {
+  CoursesService.getCoursesList(value)
+  .then((res) => {
+    // setSearchValue(res.data);
+    setCoursesArr(res.data)
+    console.log('onSearch: ', res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+      console.log('searchValue: ', searchValue);
+      useEffect(() => {
    CoursesService.getCoursesList()
       .then((res) => {
         console.log(res);
-        setcoursesArr(res.data);
+        setCoursesArr(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -253,6 +281,15 @@ export default function ListCourses() {
       <Header />
       <div className="px-5">
       <h3 className="text-4xl py-5">Quản lý danh sách khóa học </h3>
+      <Search className="bg-[#73AFCA] text-black boder rounded mr-3"
+      placeholder=""
+      onSearch={onSearch}
+      style={{
+        width: 200,
+        
+        
+      }}
+    />
       <Button className="mb-5"
         onClick={() => {
           navigate("/courses/add-courses");
@@ -262,7 +299,7 @@ export default function ListCourses() {
       </Button>
       <Table  rowSelection={rowSelection} columns={columns} dataSource={data} />
       </div>
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="Cập nhật thông tin khóa học" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
       <Form
                 className="mt-6"
                 name="basic"

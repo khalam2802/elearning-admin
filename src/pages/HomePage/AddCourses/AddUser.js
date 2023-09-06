@@ -24,7 +24,7 @@ export default function AddUser() {
  
   const onFinish = (values) => {
     console.log("values: ", values);
-    UserService.deleteRemoveUser(values)
+    UserService.postAddUser(values)
       .then((res) => {
         console.log("res: ", res);
         message.success("Thêm Người Dùng thành công !!!")
@@ -187,7 +187,7 @@ export default function AddUser() {
             ]}
           >
             <Select
-              placeholder="Select a option and change input text above"
+              placeholder=""
               allowClear
             >
               <Option value="GP01">GP01</Option>
