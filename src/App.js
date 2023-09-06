@@ -7,7 +7,8 @@ import ListCourses from './pages/HomePage/ListCourses/ListCourses';
 import AddCourses from './pages/HomePage/AddCourses/AddCourses';
 import ListUser from './pages/HomePage/ListUser/ListUser';
 import AddUser from './pages/HomePage/AddCourses/AddUser';
-import PageSearch from './pages/Search/PageSearch';
+import PageSearch from './pages/Search/PageSearchUser';
+import PageSearchUser from './pages/Search/PageSearchUser';
 
 function App() {
   return (
@@ -19,8 +20,9 @@ function App() {
         <Route path='/courses' element={<ListCourses/>} ></Route>
         <Route path='/courses/add-courses' element={<AddCourses/>} ></Route>
         <Route path='/user' element={<ListUser/>} ></Route>
+        {/* <Route path='/user/:id' element={<ListUser/>} ></Route> */}
         <Route path='/user/add-user' element={<AddUser/>} ></Route>
-        <Route path='search' element={<PageSearch/>} ></Route>
+        <Route path='search-user' element={<PageSearchUser/>} ></Route>
 
 
       </Routes>

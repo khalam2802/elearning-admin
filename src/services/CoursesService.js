@@ -7,9 +7,7 @@ export const CoursesService = {
   postAddCoursesListL:(values)=>{
     return https.post('/api/QuanLyKhoaHoc/ThemKhoaHoc',values)
   },
-  getUserList:() => { 
-    return https.get('api/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP01')
-   },
+  
   getCategories:() => { 
     return https.get('/api/QuanLyKhoaHoc/LayDanhMucKhoaHoc')
    }, 

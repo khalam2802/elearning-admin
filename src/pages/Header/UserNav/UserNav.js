@@ -23,6 +23,8 @@ export default function UserNav() {
     if (user) {
       return (
         <>
+        
+   
           <img
             alt="avatar"
             className="w-8 h-8  rounded-full ring-2 ring-offset-4 ring-[#1A293E] ring-offset-[#8fa7c8] "
@@ -63,16 +65,19 @@ export default function UserNav() {
     setIsModalOpen(false);
   };
   
+
+  
   return (
     <div>
       <div className="header_right flex items-center">
-        <Button
+        {/* <Button
           className="hover:bg-[#ffffff0d] transition-all duration-300 hover:rounded-md"
           type=""
           onClick={showModal}
         >
           <SearchOutlined className="text-[20px] hover:bg-[#ffffff0d] transition-all duration-300 hover:rounded-md " />
-        </Button>
+        </Button> */}
+        
         <Modal
           title="Search"
           open={isModalOpen}
@@ -80,12 +85,14 @@ export default function UserNav() {
           onCancel={handleCancel}
           
         >
-          <Search
-            placeholder=""
+          <Search 
+
+            placeholder="dsa"
             onSearch={onSearch}
             style={{
               width: "100%",
             }}
+           
           />
         </Modal>
 
