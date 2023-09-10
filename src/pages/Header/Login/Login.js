@@ -13,11 +13,9 @@ export default function Login() {
   let dispatch = useDispatch();
   let navigate = useNavigate();
   const onFinish = (values) => {
-    console.log("values: ", values);
     https
       .post("/api/QuanLyNguoiDung/DangNhap", values)
       .then((res) => {
-        console.log("res: ", res);
         message.success("Đăng nhập thành công");
         dispatch(setLogIn(res.data));
       localServ.setUser(res.data)
@@ -28,7 +26,6 @@ export default function Login() {
         }, 2000);
       })
       .catch((err) => {
-        console.log("err: ", err);
         message.error("Đăng nhập thất bại");
       });
   };

@@ -40,6 +40,7 @@ export default function ListCourses() {
           setImgSrc(e.target.result); //hinhBase 64
         };
         setHinhAnh(file);
+        setFile(file)
       };
       const handleOnchangeSelect=(values) => { 
         console.log('values: ', values);
@@ -56,25 +57,32 @@ export default function ListCourses() {
              console.log(err);
            });
        }, []);
+      //  cập nhật
+      const [file, setFile] = useState()
       const onFinish = (values) => {
         let today = new Date();
         let date=today.getDate() + "/"+ parseInt(today.getMonth()+1) +"/"+today.getFullYear()
         let newValues = { ...values, hinhAnh: hinhAnh.name, ngayTao:date,maKhoaHoc:khoaHoc.maKhoaHoc };
         console.log("newValues: ", newValues);
         CoursesService.putUpdateCoursesList(newValues)
+        .then((res) => {
+          let frm = new FormData();
+          frm.append("file", file);
+          frm.append("tenKhoaHoc", newValues.tenKhoaHoc);
+          CoursesService.postAddImageCourses(frm)
           .then((res) => {
             console.log("res: ", res);
-            message.success("Cập Nhật Khóa Học thành công !!!")
+            message.success("Cập nhật khóa học thành công !!!");
             setTimeout(() => {
-              setIsModalOpen(false)
-    
-              
+             window.location.reload();
             }, 1000);
-          })
-          .catch((err) => {
-            console.log("err: ", err);
-            message.error(err.response.data)
           });
+          
+        })
+        .catch((err) => {
+          console.log("err: ", err);
+          message.error(err.response.data);
+        });
       };
   const [khoaHoc, setKhoaHoc] = useState()
   console.log('khoaHoc: ', khoaHoc);
@@ -227,9 +235,9 @@ useEffect(() => {
       render: (text, courses) => {
         return (
           <Fragment>
-            {courses.moTa.length > 50
-              ? courses.moTa.substr(0, 50) + "..."
-              : courses.moTa}
+            {courses?.moTa?.length > 50
+              ? courses?.moTa?.substr(0, 50) + "..."
+              : courses?.moTa}
           </Fragment>
         );
       },

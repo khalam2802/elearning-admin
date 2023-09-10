@@ -15,7 +15,7 @@ export const CoursesService = {
     return https.get('/api/QuanLyKhoaHoc/LayDanhMucKhoaHoc')
    }, 
    postAddImageCourses:(formData) => { 
-    return https.post('/api/QuanLyKhoaHoc/ThemKhoaHocUploadHinh',formData)
+    return https.post('/api/QuanLyKhoaHoc/UploadHinhAnhKhoaHoc',formData)
     },
   deteleCoursesList:(maKhoaHoc) => { 
     return https.delete(`/api/QuanLyKhoaHoc/XoaKhoaHoc?MaKhoaHoc=${maKhoaHoc}`)

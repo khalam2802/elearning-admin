@@ -43,10 +43,22 @@ export default function AddUser() {
   const user = useSelector((state) => {
     return state.userSlice.userInfo;
   });
+  const handleChangePage=() => { 
+    navigate('/login')
+   }
+  useEffect(() => { 
+    if(!user){
+      navigate('/login')
+    }
+    
+    
+   },[])
+
 
   return (
-    <div className="relative flex flex-col justify-cente overflow-hidden">
+     <div className="relative flex flex-col justify-cente overflow-hidden">
       <Header></Header>
+      
 
       <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl md:max-w-lg">
 
@@ -212,5 +224,8 @@ export default function AddUser() {
         </Form>
       </div>
     </div>
+    
+    
+   
   );
 }

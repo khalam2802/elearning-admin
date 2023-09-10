@@ -1,4 +1,3 @@
-
 import { Form, Input, message, Button, Upload, Select, DatePicker } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,24 +7,24 @@ import { CoursesService } from "../../../services/CoursesService";
 import { Option } from "antd/es/mentions";
 import Header from "../../Header/Header";
 import moment from "moment/moment";
+import { https } from "../../../services/config";
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
-  const regexNumber = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$/;
-  const regexName = /^(?=.*[a-zA-Z]).{1,20}$/;
-  const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  const regexPassword =
-    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>/?]).{1,20}$/;
- 
+const regexNumber = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$/;
+const regexName = /^(?=.*[a-zA-Z]).{1,20}$/;
+const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const regexPassword =
+  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>/?]).{1,20}$/;
 
 export default function AddCourses() {
-const [ngayTao, setNgayTao] = useState('')
-const handleChangeDatePicker = (value) => {
-
-  setNgayTao(moment(value).format("DD/MM/YYYY"))
-};
+  const [ngayTao, setNgayTao] = useState("");
+  const handleChangeDatePicker = (value) => {
+    setNgayTao(moment(value).format("DD/MM/YYYY"));
+  };
+  const [file, setFile] = useState()
   const [imgSrc, setImgSrc] = useState("");
-  const [hinhAnh, setHinhAnh] = useState(null);
+  const [hinhAnh, setHinhAnh] = useState();
   console.log("hinhAnh: ", hinhAnh);
   const handleChangeFile = (event) => {
     let file = event.target.files[0];
@@ -36,47 +35,47 @@ const handleChangeDatePicker = (value) => {
       setImgSrc(e.target.result); //hinhBase 64
     };
     setHinhAnh(file);
+    setFile(file);
   };
   const [maDanhMucKhoaHoc, setMaDanhMucKhoaHoc] = useState([]);
   useEffect(() => {
     CoursesService.getCategories()
       .then((res) => {
-        setMaDanhMucKhoaHoc(res.data)
-
+        setMaDanhMucKhoaHoc(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-  console.log('maDanhMucKhoaHoc: ', maDanhMucKhoaHoc);
-  const renderListCourses = () => { 
-    return maDanhMucKhoaHoc.map((item,index) => { 
-      return (
-        <Option className="text-black">
-          {item.maDanhMucKhoaHoc} </Option>
-    )
-     })
+  console.log("maDanhMucKhoaHoc: ", maDanhMucKhoaHoc);
+  const renderListCourses = () => {
+    return maDanhMucKhoaHoc.map((item, index) => {
+      return <Option className="text-black">{item.maDanhMucKhoaHoc} </Option>;
+    });
   };
-  const handleOnchangeSelect=(values) => { 
-    console.log('values: ', values);
-
-   }
+  const handleOnchangeSelect = (values) => {
+    console.log("values: ", values);
+  };
   const onFinish = (values) => {
-    let newValues = { ...values, hinhAnh: hinhAnh.name, ngayTao:ngayTao };
-    console.log("newValues: ", newValues);
+    let newValues = { ...values, hinhAnh: hinhAnh.name, ngayTao: ngayTao };
     CoursesService.postAddCoursesListL(newValues)
       .then((res) => {
-        console.log("res: ", res);
-        message.success("Thêm Khóa Học thành công !!!")
-        setTimeout(() => {
-        navigate("/courses")
-
-          
-        }, 2000);
+        let frm = new FormData();
+        frm.append("file", file);
+        frm.append("tenKhoaHoc", newValues.tenKhoaHoc);
+        CoursesService.postAddImageCourses(frm)
+        .then((res) => {
+          console.log("res: ", res);
+          message.success("Thêm Khóa Học thành công !!!");
+          setTimeout(() => {
+            navigate("/courses");
+          }, 2000);
+        });
+        
       })
       .catch((err) => {
         console.log("err: ", err);
-        message.error(err.response.data)
+        message.error(err.response.data);
       });
   };
   let navigate = useNavigate();
@@ -84,6 +83,12 @@ const handleChangeDatePicker = (value) => {
   const user = useSelector((state) => {
     return state.userSlice.userInfo;
   });
+  useEffect(() => {
+    if (!user) {
+      console.log("user: ", user);
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <div className="relative h-max-content min-h-screen w-full bg-cover bg-white flex overflow-hidden">
@@ -95,7 +100,6 @@ const handleChangeDatePicker = (value) => {
         <div className="py-[105px]">
           <div className="relative flex flex-col justify-center overflow-hidden px-10 lg:mt-0 mt-10">
             <div className="w-full p-4 m-auto bg-white rounded-xl shadow-xl md:max-w-lg">
-              
               <h1 className="text-3xl mt-4 font-semibold text-center text-[#388acc]">
                 Thêm Khóa học
               </h1>
@@ -129,9 +133,9 @@ const handleChangeDatePicker = (value) => {
                       message: "quên nhập nè ní ơi !!!",
                     },
                     {
-                      pattern:regexNumber,
-                      message:'Chỉ nhập số thui'
-                    }
+                      pattern: regexNumber,
+                      message: "Chỉ nhập số thui",
+                    },
                   ]}
                 >
                   <Input className="w-full px-4 py-2 text-[#59ba9a] bg-white border rounded-md focus:border-text-[#59ba9a] focus:text-[#59ba9a] focus:outline-none focus:ring focus:ring-opacity-40" />
@@ -147,9 +151,9 @@ const handleChangeDatePicker = (value) => {
                       message: "quên nhập nè ní ơi !!!",
                     },
                     {
-                      pattern:'',
-                      message:''
-                    }
+                      pattern: "",
+                      message: "",
+                    },
                   ]}
                 >
                   <Input className="w-full px-4 py-2 text-[#59ba9a] bg-white border rounded-md focus:border-text-[#59ba9a] focus:text-[#59ba9a] focus:outline-none focus:ring focus:ring-opacity-40" />
@@ -177,9 +181,9 @@ const handleChangeDatePicker = (value) => {
                       message: "quên nhập nè ní ơi !!!",
                     },
                     {
-                      pattern:regexName,
-                      message:'Chỉ nhập chữ thui'
-                    }
+                      pattern: regexName,
+                      message: "Chỉ nhập chữ thui",
+                    },
                   ]}
                 >
                   <Input className="w-full px-4 py-2text-[#59ba9a] bg-white border rounded-md focus:border-text-[#59ba9a] focus:text-[#59ba9a] focus:outline-none focus:ring focus:ring-opacity-40" />
@@ -227,13 +231,13 @@ const handleChangeDatePicker = (value) => {
                   <Input className="w-full px-4 py-2text-[#59ba9a] bg-white border rounded-md focus:border-text-[#59ba9a] focus:text-[#59ba9a] focus:outline-none focus:ring focus:ring-opacity-40" />
                 </Form.Item>
                 {/* ngày tạo */}
-                    <Form.Item label="Ngày tạo" >
-                      <DatePicker
-                        onChange={handleChangeDatePicker}
-                        name="ngayTao"
-                        format={"DD/MM/YYYY"}
-                      />
-                    </Form.Item>
+                <Form.Item label="Ngày tạo">
+                  <DatePicker
+                    onChange={handleChangeDatePicker}
+                    name="ngayTao"
+                    format={"DD/MM/YYYY"}
+                  />
+                </Form.Item>
                 {/* maNhom */}
                 <Form.Item
                   label="Mã Nhóm"
@@ -246,22 +250,21 @@ const handleChangeDatePicker = (value) => {
                     },
                   ]}
                 >
-                   <Select
-                        placeholder="Select a option and change input text above"
-                        allowClear
-                      >
-                        <Option value="GP01">GP01</Option>
-                        <Option value="GP02">GP02</Option>
-                        <Option value="GP03">GP03</Option>
-                        <Option value="GP04">GP04</Option>
-                        <Option value="GP05">GP05</Option>
-                        <Option value="GP06">GP06</Option>
-                        <Option value="GP07">GP07</Option>
-                        <Option value="GP08">GP08</Option>
-                      </Select>
+                  <Select
+                    placeholder="Select a option and change input text above"
+                    allowClear
+                  >
+                    <Option value="GP01">GP01</Option>
+                    <Option value="GP02">GP02</Option>
+                    <Option value="GP03">GP03</Option>
+                    <Option value="GP04">GP04</Option>
+                    <Option value="GP05">GP05</Option>
+                    <Option value="GP06">GP06</Option>
+                    <Option value="GP07">GP07</Option>
+                    <Option value="GP08">GP08</Option>
+                  </Select>
                 </Form.Item>
-            
-             
+
                 {/* maDanhMucKhoaHoc */}
                 <Form.Item
                   label="Danh Mục Khóa Học"
@@ -275,13 +278,18 @@ const handleChangeDatePicker = (value) => {
                   ]}
                 >
                   <Select onChange={handleOnchangeSelect}>
-                    {maDanhMucKhoaHoc.map((item,index) => { 
-      return (<Option value={item.maDanhMuc} key={index} className="text-black">
-          {item.maDanhMuc} </Option>
-    )
-     })}
+                    {maDanhMucKhoaHoc.map((item, index) => {
+                      return (
+                        <Option
+                          value={item.maDanhMuc}
+                          key={index}
+                          className="text-black"
+                        >
+                          {item.maDanhMuc}{" "}
+                        </Option>
+                      );
+                    })}
                   </Select>
-                
                 </Form.Item>
                 {/* taiKhoanNguoiTao */}
                 <Form.Item
@@ -298,7 +306,6 @@ const handleChangeDatePicker = (value) => {
                   <Input className="w-full px-4 py-2text-[#59ba9a] bg-white border rounded-md focus:border-text-[#59ba9a] focus:text-[#59ba9a] focus:outline-none focus:ring focus:ring-opacity-40" />
                 </Form.Item>
 
-              
                 <Form.Item className="mt-3">
                   <button
                     type="submit"
@@ -308,7 +315,6 @@ const handleChangeDatePicker = (value) => {
                   </button>
                 </Form.Item>
               </Form>
-              
             </div>
           </div>
         </div>
